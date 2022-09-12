@@ -1,0 +1,25 @@
+// miniconda  works
+conda init 
+conda create -n py27 python=2.7
+conda activate py27
+--> all installations in this env are python 2.7 related
+
+
+//install rdkit
+conda install -c rdkit rdkit=2018.09.1
+
+//install pytorch 
+pip install pytorch (assuming you have pip2, else you install pip2)
+
+//install future
+pip install future 
+
+pip install scipy
+
+// in sample.py import sys sys.append.path("../")
+
+
+//DOCKER idea
+
+1) pull python2.7 & pip2 as base image and install  pytorch, scipy, future
+2) Install conda and hence rdkit from it
