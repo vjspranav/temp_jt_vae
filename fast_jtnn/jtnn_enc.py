@@ -6,7 +6,7 @@ from mol_tree import Vocab, MolTree
 from nnutils import create_var, index_select_ND
 
 class JTNNEncoder(nn.Module):
-
+    "Implementation of Encoder for tree"
     def __init__(self, hidden_size, depth, embedding):
         super(JTNNEncoder, self).__init__()
         self.hidden_size = hidden_size

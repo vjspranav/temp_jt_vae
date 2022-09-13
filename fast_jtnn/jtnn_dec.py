@@ -10,7 +10,7 @@ MAX_NB = 15
 MAX_DECODE_LEN = 100
 
 class JTNNDecoder(nn.Module):
-
+    """Implementation of Decoder for Tree """
     def __init__(self, vocab, hidden_size, latent_size, embedding):
         super(JTNNDecoder, self).__init__()
         self.hidden_size = hidden_size

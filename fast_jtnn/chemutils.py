@@ -73,6 +73,7 @@ def get_clique_mol(mol, atoms):
     return new_mol
 
 def tree_decomp(mol):
+    """Takes input as molecule and returns the maximum spanning tree over cluster graph"""
     n_atoms = mol.GetNumAtoms()
     if n_atoms == 1: #special case
         return [[0]], []

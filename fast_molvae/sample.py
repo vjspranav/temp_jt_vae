@@ -27,6 +27,7 @@ args = parser.parse_args()
 vocab = [x.strip("\r\n ") for x in open(args.vocab)]
 vocab = Vocab(vocab)
 
+# loads the model 
 model = JTNNVAE(
     vocab,
     args.hidden_size,
@@ -35,7 +36,7 @@ model = JTNNVAE(
     args.depthG)
 model.load_state_dict(torch.load(args.model))
 model = model.cuda()
-
 torch.manual_seed(0)
+# sample from the prior distribution
 for i in xrange(args.nsample):
     print model.sample_prior()

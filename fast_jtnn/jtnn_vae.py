@@ -15,7 +15,7 @@ import rdkit.Chem as Chem
 import copy, math
 
 class JTNNVAE(nn.Module):
-
+    """ Encoder and Decoder for tree and graph"""
     def __init__(self, vocab, hidden_size, latent_size, depthT, depthG):
         super(JTNNVAE, self).__init__()
         self.vocab = vocab

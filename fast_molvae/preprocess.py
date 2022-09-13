@@ -43,7 +43,7 @@ if __name__ == "__main__":
         data = [line.strip("\r\n ").split()[0] for line in f]
 
     all_data = pool.map(tensorize, data)
-
+    #print all_data[0]
     le = (len(all_data) + num_splits - 1) / num_splits
 
     for split_id in xrange(num_splits):
