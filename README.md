@@ -29,6 +29,9 @@ The following directories provides scripts for the experiments in our original I
 * `molopt/` includes scripts for jointly training our VAE and property predictors. Please read `molopt/README.md` for details.
 * `jtnn/` contains codes for model formulation.
 
+# Team Details 
+Team 16 
+Venika 
+Sahithi 
 
-# Contact
-Wengong Jin (wengong@csail.mit.edu)
+Documentation can be found [here](https://docs.google.com/document/d/1yjG4IqaTJOsWQZRMqSTkO87unu1jXmfHLV5o_1Wbzx4/edit) 
