@@ -98,7 +98,7 @@ class JTPropVAE(nn.Module):
         prop_loss = self.prop_loss(self.propNN(all_vec).squeeze(), prop_label)
         
         loss = word_loss + topo_loss + assm_loss + 2 * stereo_loss + beta * kl_loss + prop_loss
-        return loss, kl_loss.data[0], word_acc, topo_acc, assm_acc, stereo_acc, prop_loss.data[0]
+        return loss, kl_loss.data.item(), word_acc, topo_acc, assm_acc, stereo_acc, prop_loss.data.item()
 
     def assm(self, mol_batch, mol_vec, tree_mess):
         cands = []
@@ -131,7 +131,7 @@ class JTPropVAE(nn.Module):
                 cur_score = scores.narrow(0, tot, ncand)
                 tot += ncand
 
-                if cur_score.data[label] >= cur_score.max().data[0]:
+                if cur_score.data[label] >= cur_score.max().data.item():
                     acc += 1
 
                 label = create_var(torch.LongTensor([label]))
@@ -165,7 +165,7 @@ class JTPropVAE(nn.Module):
         all_loss = []
         for label,le in labels:
             cur_scores = scores.narrow(0, st, le)
-            if cur_scores.data[label] >= cur_scores.max().data[0]: 
+            if cur_scores.data[label] >= cur_scores.max().data.item(): 
                 acc += 1
             label = create_var(torch.LongTensor([label]))
             all_loss.append( self.stereo_loss(cur_scores.view(1,-1), label) )
@@ -293,7 +293,7 @@ class JTPropVAE(nn.Module):
         stereo_vecs = self.G_mean(stereo_vecs)
         scores = nn.CosineSimilarity()(stereo_vecs, mol_vec)
         _,max_id = scores.max(dim=0)
-        return stereo_cands[max_id.data[0]]
+        return stereo_cands[max_id.data.item()]
 
     def dfs_assemble(self, tree_mess, mol_vec, all_nodes, cur_mol, global_amap, fa_amap, cur_node, fa_node, prob_decode):
         fa_nid = fa_node.nid if fa_node is not None else -1
@@ -327,7 +327,7 @@ class JTPropVAE(nn.Module):
         backup_mol = Chem.RWMol(cur_mol)
         for i in xrange(cand_idx.numel()):
             cur_mol = Chem.RWMol(backup_mol)
-            pred_amap = cand_amap[cand_idx[i].data[0]]
+            pred_amap = cand_amap[cand_idx[i].data.item()]
             new_global_amap = copy.deepcopy(global_amap)
 
             for nei_id,ctr_atom,nei_atom in pred_amap:

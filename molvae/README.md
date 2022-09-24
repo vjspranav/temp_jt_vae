@@ -42,7 +42,7 @@ To sample new molecules with pretrained models, simply run
 ```
 python sample.py --nsample 100 --vocab ../data/zinc/vocab.txt \
 --hidden 450 --depth 3 --latent 56 \
---model MPNVAE-h450-L56-d3-beta0.005/model.4
+--model MPNVAE-h450-L56-d3-beta0.005/model.iter-4
 ```
 This script prints each line the SMILES string of each molecule. `prior_mols.txt` contains these SMILES strings.
 
@@ -50,7 +50,7 @@ For molecule reconstruction, run
 ```
 python reconstruct.py --test ../data/zinc/test.txt --vocab ../data/zinc/vocab.txt \
 --hidden 450 --depth 3 --latent 56 \
---model MPNVAE-h450-L56-d3-beta0.005/model.4
+--model MPNVAE-h450-L56-d3-beta0.005/model.iter-4
 ```
 Replace `test.txt` with `valid.txt` to test the validation accuracy (for hyperparameter tuning).
 

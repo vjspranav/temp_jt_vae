@@ -34,9 +34,13 @@ depth = int(opts.depth)
 stereo = True if int(opts.stereo) == 1 else False
 
 model = JTNNVAE(vocab, hidden_size, latent_size, depth, stereo=stereo)
-model.load_state_dict(torch.load(opts.model_path))
-model = model.cuda()
 
+if  torch.cuda.is_available():
+    model.load_state_dict(torch.load(opts.model_path))
+else:
+    model.load_state_dict(torch.load(opts.model_path,map_location=torch.device('cpu')))
+
+model=model.to(device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu'))
 data = []
 with open(opts.test_path) as f:
     for line in f:

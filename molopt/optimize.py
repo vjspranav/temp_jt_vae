@@ -1,7 +1,8 @@
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
-
+import sys
+sys.path.append("../")
 import math, random, sys
 from optparse import OptionParser
 from collections import deque
@@ -35,8 +36,12 @@ depth = int(opts.depth)
 sim_cutoff = float(opts.cutoff)
 
 model = JTPropVAE(vocab, hidden_size, latent_size, depth)
-model.load_state_dict(torch.load(opts.model_path))
-model = model.cuda()
+if torch.cuda.is_available():
+    model.load_state_dict(torch.load(opts.model_path))
+else:
+    model.load_state_dict(torch.load(opts.model_path,map_location=torch.device('cpu')))
+model=model.to(device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu'))
+
 
 data = []
 with open(opts.test_path) as f:
