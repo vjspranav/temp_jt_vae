@@ -1,3 +1,5 @@
-rdkit
 numpy
 torch
+future
+scipy
+
