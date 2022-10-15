@@ -14,14 +14,12 @@ ENV PATH="/root/miniconda3/bin:${PATH}"
 ARG PATH="/root/miniconda3/bin:${PATH}"
 RUN echo ". /root/miniconda3/etc/profile.d/conda.sh" >> ~/.profile
 RUN conda init bash
-# RUN . /root/.bashrc && \
-#     /root/miniconda3/bin/conda create -n py27 python=2.7 && \
-# SHELL ["conda","run", "-n", "py27", "/bin/bash","-c"]
-# RUN echo "checkpoint"
-# CMD conda activate py27
-# RUN pip2 install http://download.pytorch.org/whl/cu80/torch-0.2.0.post3-cp27-cp27mu-manylinux1_x86_64.whl
+RUN conda create -n py27 python=2.7
+
+RUN echo "source activate py27" > ~/.bashrc
+RUN echo "Switched to Python 2.7"
+# RUN pip install http://download.pytorch.org/whl/cu80/torch-0.2.0.post3-cp27-cp27mu-manylinux1_x86_64.whl
 # COPY requirements.txt .
 # RUN cat requirements.txt 
 # RUN pip2 install -r requirements.txt
-SHELL ["python", "--version"]
-
+# RUN conda install -c rdkit rdkit=2018.09.1
