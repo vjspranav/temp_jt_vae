@@ -2,3 +2,5 @@ numpy
 future
 scipy
 flask
+streamlit
+pytest

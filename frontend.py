@@ -2,12 +2,13 @@ import streamlit as st
 import json
 import requests
 import pandas as pd
-st.set_page_config(page_title="JTNN", page_icon=":atom:", layout="wide", initial_sidebar_state="expanded")
+
+st.set_page_config(page_title="Junction Tree VAE ", page_icon=":atom:", layout="wide", initial_sidebar_state="expanded")
 st.title('MolVAE')
 st.sidebar.header('Navigation')
 page = st.sidebar.selectbox('Select a page', ['Home', 'MolVAE', 'BO', 'Sampling', 'MolOpt'])
 if page == 'Home':
-    st.write('This is the home page')
+    st.write('Welcome to home page')
 elif page == 'MolVAE':
     st.write('This is the MolVAE page')
     smiles = st.text_input('Enter SMILES')
@@ -31,10 +32,11 @@ elif page == 'Sampling':
             st.write(line)
 elif page == 'MolOpt':
     st.sidebar.header('MolOpt')
-    st.sidebar.subheader('Input SMILES')
-    st.sidebar.write('bsjkmamnd')
+    st.sidebar.subheader('Input SMILE')
+    st.sidebar.write('COc1cc2c(cc1OC)CC([NH3+])C2')
     st.sidebar.subheader('Threshold')
-    st.sidebar.write('-0.58582')
+    st.sidebar.write('-2.50504567445')
+    st.sidebar.write('For multiple inputs give ; separated values')
     smiles = st.text_input('SMILES', value='C1=CC=CC=C1')
     st.subheader('Input Threshold')
     threshold = st.text_input('Threshold', value=0.5)
@@ -46,7 +48,7 @@ elif page == 'MolOpt':
         df = []
         t = r.text.split('\n')
         for i in range(len(t)-2):
-            temp=t[i].split(' ')
+            temp=t[i].split('')
             print(temp)
             df.append({
                 'SMILES': temp[0],
