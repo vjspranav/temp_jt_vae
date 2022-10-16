@@ -1,6 +1,14 @@
 import rdkit
 import rdkit.Chem as Chem
-from chemutils import get_clique_mol, tree_decomp, get_mol, get_smiles, set_atommap, enum_assemble, decode_stereo
+from chemutils import (
+    decode_stereo,
+    enum_assemble,
+    get_clique_mol,
+    get_mol,
+    get_smiles,
+    set_atommap,
+    tree_decomp,
+)
 from vocab import *
 
 
@@ -37,8 +45,8 @@ class MolTreeNode(object):
         clique = list(set(clique))
         label_mol = get_clique_mol(original_mol, clique)
         self.label = Chem.MolToSmiles(
-            Chem.MolFromSmiles(
-                get_smiles(label_mol)))
+            Chem.MolFromSmiles(get_smiles(label_mol))
+        )
 
         for cidx in clique:
             original_mol.GetAtomWithIdx(cidx).SetAtomMapNum(0)
@@ -47,13 +55,14 @@ class MolTreeNode(object):
 
     def assemble(self):
         neighbors = [
-            nei for nei in self.neighbors if nei.mol.GetNumAtoms() > 1]
+            nei for nei in self.neighbors if nei.mol.GetNumAtoms() > 1
+        ]
         neighbors = sorted(
-            neighbors,
-            key=lambda x: x.mol.GetNumAtoms(),
-            reverse=True)
+            neighbors, key=lambda x: x.mol.GetNumAtoms(), reverse=True
+        )
         singletons = [
-            nei for nei in self.neighbors if nei.mol.GetNumAtoms() == 1]
+            nei for nei in self.neighbors if nei.mol.GetNumAtoms() == 1
+        ]
         neighbors = singletons + neighbors
 
         cands, aroma = enum_assemble(self, neighbors)
@@ -76,10 +85,10 @@ class MolTree(object):
         self.mol = get_mol(smiles)
         # print self.mol
         # Stereo Generation (currently disabled)
-        #mol = Chem.MolFromSmiles(smiles)
-        #self.smiles3D = Chem.MolToSmiles(mol, isomericSmiles=True)
-        #self.smiles2D = Chem.MolToSmiles(mol)
-        #self.stereo_cands = decode_stereo(self.smiles2D)
+        # mol = Chem.MolFromSmiles(smiles)
+        # self.smiles3D = Chem.MolToSmiles(mol, isomericSmiles=True)
+        # self.smiles2D = Chem.MolToSmiles(mol)
+        # self.stereo_cands = decode_stereo(self.smiles2D)
 
         cliques, edges = tree_decomp(self.mol)
         self.nodes = []
@@ -105,7 +114,7 @@ class MolTree(object):
             node.nid = i + 1
             if len(node.neighbors) > 1:  # Leaf node mol is not marked
                 set_atommap(node.mol, node.nid)
-            node.is_leaf = (len(node.neighbors) == 1)
+            node.is_leaf = len(node.neighbors) == 1
 
     def size(self):
         return len(self.nodes)
@@ -130,6 +139,7 @@ def dfs(node, fa_idx):
 
 if __name__ == "__main__":
     import sys
+
     lg = rdkit.RDLogger.logger()
     lg.setLevel(rdkit.RDLogger.CRITICAL)
 
