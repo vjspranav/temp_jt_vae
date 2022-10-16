@@ -34,8 +34,12 @@ model = JTNNVAE(
     args.latent_size,
     args.depthT,
     args.depthG)
-model.load_state_dict(torch.load(args.model))
-model = model.cuda()
+if torch.cuda.is_available():
+    model.load_state_dict(torch.load(args.model))
+    model = model.cuda()
+else:
+    model.load_state_dict(torch.load(args.model, map_location=torch.device('cpu')))
+    model = model.cpu()
 torch.manual_seed(0)
 # sample from the prior distribution
 for i in xrange(args.nsample):

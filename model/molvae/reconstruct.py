@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from torch.autograd import Variable
 import sys 
-# sys.path.append("../")
+sys.path.append("../")
 import math, random, sys
 from optparse import OptionParser
 from collections import deque

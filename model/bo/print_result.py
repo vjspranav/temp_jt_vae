@@ -18,13 +18,13 @@ def load_object(filename):
     return ret
 
 all_smiles = []
-for i in xrange(1,11):
-    for j in xrange(5):
-        fn = 'results%d/scores%d.dat' % (i,j)
-        scores = load_object(fn)
-        fn = 'results%d/valid_smiles%d.dat' % (i,j)
-        smiles = load_object(fn)
-        all_smiles.extend(zip(smiles, scores))
+i = int(sys.argv[1])
+for j in xrange(5):
+    fn = 'results%d/scores%d.dat' % (i,j)
+    scores = load_object(fn)
+    fn = 'results%d/valid_smiles%d.dat' % (i,j)
+    smiles = load_object(fn)
+    all_smiles.extend(zip(smiles, scores))
 
 all_smiles = [(x,-y) for x,y in all_smiles]
 all_smiles = sorted(all_smiles, key=lambda x:x[1], reverse=True)
