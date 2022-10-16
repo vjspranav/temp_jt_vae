@@ -22,6 +22,7 @@ def molvae():
     # Run reconstruct.py
     out = os.popen('cd molvae && python reconstruct.py --test input_molvae.txt --vocab ../data/zinc/vocab.txt --hidden 450 --depth 3 --latent 56 --model ./MPNVAE-h450-L56-d3-beta0.005/model.iter-4').read()
     return out
+
 @app.route('/bo', methods=['POST'])
 def bo():
     data = request.get_json()
