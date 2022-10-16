@@ -23,3 +23,6 @@ pip install scipy
 
 1) pull python2.7 & pip2 as base image and install  pytorch, scipy, future
 2) Install conda and hence rdkit from it
+
+
+libxrender1

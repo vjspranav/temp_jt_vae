@@ -17,8 +17,14 @@ RUN conda init bash
 RUN conda create -n py27 python=2.7
 RUN echo "source activate py27" > ~/.bashrc
 RUN echo "Switched to Python 2.7"
-# RUN pip install http://download.pytorch.org/whl/cu80/torch-0.2.0.post3-cp27-cp27mu-manylinux1_x86_64.whl
-# COPY requirements.txt .
-# RUN cat requirements.txt 
-# RUN pip2 install -r requirements.txt
-# RUN conda install -c rdkit rdkit=2018.09.1
+RUN pip install https://download.pytorch.org/whl/cpu/torch-1.4.0%2Bcpu-cp27-cp27mu-linux_x86_64.whl
+COPY requirements.txt .
+RUN cat requirements.txt 
+RUN pip install -r requirements.txt
+RUN conda install -c rdkit rdkit=2018.09.1
+RUN apt-get install libxrender1 -y
+RUN apt install -y libsm6 libxext6 libxrender-dev 
+WORKDIR /app
+COPY ./ ./
+WORKDIR /app/model
+RUN echo "python app.py" >> ~/.bashrc
