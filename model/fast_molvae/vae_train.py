@@ -5,7 +5,9 @@ import torch.optim.lr_scheduler as lr_scheduler
 from torch.utils.data import DataLoader
 from torch.autograd import Variable
 
-import math, random, sys
+import math
+import random
+import sys
 import numpy as np
 import argparse
 from collections import deque
@@ -14,7 +16,7 @@ import cPickle as pickle
 from fast_jtnn import *
 import rdkit
 
-lg = rdkit.RDLogger.logger() 
+lg = rdkit.RDLogger.logger()
 lg.setLevel(rdkit.RDLogger.CRITICAL)
 
 parser = argparse.ArgumentParser()
@@ -46,10 +48,15 @@ parser.add_argument('--save_iter', type=int, default=5000)
 args = parser.parse_args()
 print args
 
-vocab = [x.strip("\r\n ") for x in open(args.vocab)] 
+vocab = [x.strip("\r\n ") for x in open(args.vocab)]
 vocab = Vocab(vocab)
 
-model = JTNNVAE(vocab, args.hidden_size, args.latent_size, args.depthT, args.depthG).cuda()
+model = JTNNVAE(
+    vocab,
+    args.hidden_size,
+    args.latent_size,
+    args.depthT,
+    args.depthG).cuda()
 print model
 
 for param in model.parameters():
@@ -59,7 +66,8 @@ for param in model.parameters():
         nn.init.xavier_normal_(param)
 
 if args.load_epoch > 0:
-    model.load_state_dict(torch.load(args.save_dir + "/model.iter-" + str(args.load_epoch)))
+    model.load_state_dict(torch.load(
+        args.save_dir + "/model.iter-" + str(args.load_epoch)))
 
 print "Model #Params: %dK" % (sum([x.nelement() for x in model.parameters()]) / 1000,)
 
@@ -67,8 +75,16 @@ optimizer = optim.Adam(model.parameters(), lr=args.lr)
 scheduler = lr_scheduler.ExponentialLR(optimizer, args.anneal_rate)
 scheduler.step()
 
-param_norm = lambda m: math.sqrt(sum([p.norm().item() ** 2 for p in m.parameters()]))
-grad_norm = lambda m: math.sqrt(sum([p.grad.norm().item() ** 2 for p in m.parameters() if p.grad is not None]))
+
+def param_norm(m):
+    return math.sqrt(
+        sum([p.norm().item() ** 2 for p in m.parameters()]))
+
+
+def grad_norm(m):
+    return math.sqrt(
+        sum([p.grad.norm().item() ** 2 for p in m.parameters() if p.grad is not None]))
+
 
 total_step = args.load_epoch
 beta = args.beta
@@ -88,7 +104,8 @@ for epoch in xrange(args.epoch):
             print e
             continue
 
-        meters = meters + np.array([kl_div, wacc * 100, tacc * 100, sacc * 100])
+        meters = meters + \
+            np.array([kl_div, wacc * 100, tacc * 100, sacc * 100])
 
         if total_step % args.print_iter == 0:
             meters /= args.print_iter
@@ -97,7 +114,11 @@ for epoch in xrange(args.epoch):
             meters *= 0
 
         if total_step % args.save_iter == 0:
-            torch.save(model.state_dict(), args.save_dir + "/model.iter-" + str(total_step))
+            torch.save(
+                model.state_dict(),
+                args.save_dir +
+                "/model.iter-" +
+                str(total_step))
 
         if total_step % args.anneal_iter == 0:
             scheduler.step()
